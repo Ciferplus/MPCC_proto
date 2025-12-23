@@ -14,8 +14,16 @@ if(BUILD_PATH_PROCESSING_STANDALONE)
     find_package(Eigen3 REQUIRED)
     include_directories(${EIGEN3_INCLUDE_DIR})
     
-    # Include JSON library (adjust path as needed)
-    include_directories(../External/Json/include)
+    # Try to find nlohmann/json, fall back to local path if not found
+    find_package(nlohmann_json QUIET)
+    if(NOT nlohmann_json_FOUND)
+        message(STATUS "nlohmann/json not found via find_package, using local path")
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../External/Json/include")
+            include_directories(../External/Json/include)
+        else()
+            message(WARNING "nlohmann/json not found. Please install it or set the correct path.")
+        endif()
+    endif()
 endif()
 
 # Library source files

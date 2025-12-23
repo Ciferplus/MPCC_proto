@@ -179,7 +179,11 @@ void CubicSpline::genSpline(const Eigen::VectorXd &x_in, const Eigen::VectorXd &
 
     bool success = compSplineParams();
 
-    // TODO if success is false call exception
+    if (!success) {
+        std::cerr << "Error: Failed to compute spline parameters. Data may not be set." << std::endl;
+        // Could throw exception here if preferred:
+        // throw std::runtime_error("Failed to compute spline parameters");
+    }
 }
 
 double CubicSpline::getPoint(double x) const

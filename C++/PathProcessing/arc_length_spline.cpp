@@ -121,7 +121,11 @@ RawPath ArcLengthSpline::outlierRemoval(const Eigen::VectorXd &X_original, const
     int j = 0;
 
     if (X_original.size() != Y_original.size()){
-        // error
+        std::cerr << "Error: X and Y vectors must have the same size" << std::endl;
+        // Return original data if sizes don't match
+        resampled_path.X = X_original;
+        resampled_path.Y = Y_original;
+        return resampled_path;
     }
 
     int n_points = X_original.size();

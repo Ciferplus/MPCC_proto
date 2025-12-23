@@ -65,8 +65,13 @@ void Normalization::loadFromFile(std::string file, int nx, int nu, int ns)
     if (jsonNorm.contains("vs")) T_x(9, 9) = jsonNorm["vs"];
 
     // Compute inverse by inverting diagonal elements
+    const double epsilon = 1e-10;
     for(int i = 0; i < nx; i++)
     {
+        if (std::abs(T_x(i, i)) < epsilon) {
+            std::cerr << "Warning: T_x(" << i << "," << i << ") is near zero, setting to 1.0" << std::endl;
+            T_x(i, i) = 1.0;
+        }
         T_x_inv(i, i) = 1.0/T_x(i, i);
     }
 
@@ -78,6 +83,10 @@ void Normalization::loadFromFile(std::string file, int nx, int nu, int ns)
     // Compute inverse by inverting diagonal elements
     for(int i = 0; i < nu; i++)
     {
+        if (std::abs(T_u(i, i)) < epsilon) {
+            std::cerr << "Warning: T_u(" << i << "," << i << ") is near zero, setting to 1.0" << std::endl;
+            T_u(i, i) = 1.0;
+        }
         T_u_inv(i, i) = 1.0/T_u(i, i);
     }
 

@@ -75,10 +75,19 @@ void example_arc_length_spline() {
 void example_normalization() {
     std::cout << "\n=== Normalization Example ===" << std::endl;
     
+    // Note: This example requires a normalization.json file
+    std::string norm_file = "../Params/normalization.json";
+    std::ifstream test_file(norm_file);
+    if (!test_file.good()) {
+        std::cout << "Skipping normalization example: " << norm_file << " not found" << std::endl;
+        return;
+    }
+    test_file.close();
+    
     // Create normalization with identity matrices
     Normalization norm;
     int nx = 10, nu = 3, ns = 3;
-    norm.loadFromFile("../Params/normalization.json", nx, nu, ns);
+    norm.loadFromFile(norm_file, nx, nu, ns);
     
     std::cout << "State transformation matrix (diagonal):" << std::endl;
     for (int i = 0; i < std::min(5, nx); i++) {
